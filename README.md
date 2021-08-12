@@ -80,9 +80,8 @@ The output of warnings on the IOT2050 device should stop and the IOTbot can be s
 | z (2)  | Turn left/right    |
 | 3      | Throttle           |
 
-![Frontlight](/images/01_MecanumHalfFront.jpg, "Frontlight")![Taillight](/images/06_MecanumAngleBack.jpg, "Taillight")
-
 <img src="/images/01_MecanumHalfFront.jpg" alt="Frontlight" width="320"/>
+<img src="/images/06_MecanumAngleBack.jpg" alt="Taillight" width="320"/>
 
 ### Steering with Keyboard
 For the IOTbot, a minimalistic GUI is provided, that enables the steering with the keyboard.
