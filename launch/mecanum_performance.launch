@@ -10,7 +10,7 @@
     <param name="direction"           value="1"/>
     <param name="enableYMotion"       value="1"/>
     <param name="gearRatio"           value="72"/>
-    <param name="encoderRatio"        value="4096"/>
+    <param name="encoderRatio"        value="2048"/>
     <param name="rpmMax"              value="89"/>
     <param name="kp"                  value="0.5"/>
     <param name="ki"                  value="10.0"/>
