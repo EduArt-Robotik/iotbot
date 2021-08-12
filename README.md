@@ -87,4 +87,4 @@ The output of warnings on the IOT2050 device should stop and the IOTbot can be s
 
 ### Steering with Keyboard
 For the IOTbot, a minimalistic GUI is provided, that enables the steering with the keyboard.
-For installation and usage, please visit the following repository: https://github.com/eduart-robotik/iotbot.git
+For installation and usage, please visit the following repository: https://github.com/eduart-robotik/iotbot_virtual_joy.git
