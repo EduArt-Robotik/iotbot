@@ -12,10 +12,9 @@ reboot
 sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu buster main" > /etc/apt/sources.list.d/ros-latest.list'
 apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 apt update
-apt install ros-noetic-ros-base ros-noetic-joy
+apt install ros-noetic-ros-base ros-noetic-joy git
 echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc 
 source /opt/ros/noetic/setup.bash
-apt install git
 mkdir -p catkin_ws/src
 cd catkin_ws/src/
 catkin_init_workspace 
@@ -42,7 +41,7 @@ When everthing is initialized well, one should see the following output:
 ```console
 [ WARN] [1628772862.880453339]: Lag detected ... deactivate motor control
 ```
-This is not a bug, but a feature, since the robot will stop immediatly, if no frequent communication with a controling node is established.
+This is not a bug, but a feature, since the robot will stop immediately, if no frequent communication with a controlling node is established.
 
 ### Steering with Joystick Extreme 3D Pro
 Install the ROS joy interface on your host machine, if you have an Extreme 3D Pro.
@@ -81,4 +80,8 @@ The output of warnings on the IOT2050 device should stop and the IOTbot can be s
 | z (2)  | Turn left/right    |
 | 3      | Throttle           |
 
+![Frontlight](/images/01_MecanumHalfFront.jpg)![Taillight](/images/06_MecanumAngleBack.jpg)
+
 ### Steering with Keyboard
+For the IOTbot, a minimalistic GUI is provided, that enables the steering with the keyboard.
+For installation and usage, please visit the following repository: https://github.com/eduart-robotik/iotbot.git
