@@ -1,32 +1,33 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>iotbot</name>
-  <version>0.0.0</version>
+  <version>0.1.0</version>
   <description>ROS interface to IOT2050 robotic extension shield</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="stefan.may@eduart-robotik.de">Stefan May</maintainer>
+  <maintainer email="info AT eduart-robotik DOT com">EduArt Robotik</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
   <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>TODO</license>
+  <license>BSD 3-Clause License</license>
 
 
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/iotbot</url> -->
+  <url type="website">https://www.eduart-robotik.com</url>
+  <url type="repository">https://github.com/EduArt-Robotik/iotbot</url>
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
   <!-- Authors do not have to be maintainers, but could be -->
   <!-- Example: -->
   <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
-
+  <author>Stefan May (EduArt Robotik)</author>
 
   <!-- The *depend tags are used to specify dependencies -->
   <!-- Dependencies can be catkin packages or system dependencies -->
