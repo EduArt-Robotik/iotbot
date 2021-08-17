@@ -43,6 +43,15 @@ When everthing is initialized well, one should see the following output:
 ```
 This is not a bug, but a feature, since the robot will stop immediately, if no frequent communication with a controlling node is established.
 
+Please notice also, that the ROS variables ROS_MASTER_URI, ROS_HOSTNAME and ROS_IP should be set properly. If you have a changing IP-address of the robot, you might consider to use the following bash code in your ~/.bashrc:
+
+```console
+MYIP=`hostname -I | awk '{print $1}'`
+export ROS_MASTER_URI=http://${MYIP}:11311
+export ROS_IP=${MYIP}
+export ROS_HOSTNAME=${MYIP}
+``` 
+
 ### Steering with Joystick Extreme 3D Pro
 Install the ROS joy interface on your host machine, if you have an Extreme 3D Pro.
 ```console
