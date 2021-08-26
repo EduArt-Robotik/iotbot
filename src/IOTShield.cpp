@@ -38,6 +38,7 @@ IOTShield::IOTShield()
    _acceleration.resize(3);
    _angularRate.resize(3);
 
+#if _WITH_MRAA
    _uart = new mraa::Uart(devPath);
 
    if (_uart->setBaudRate(115200) != mraa::SUCCESS) {
@@ -53,11 +54,16 @@ IOTShield::IOTShield()
    }
    
    _uart->flush();
+#else
+   std::cerr << "UART interface not available. MRAA is missing!" << std::endl;
+#endif
 }
    
 IOTShield::~IOTShield()
 {
+#if _WITH_MRAA
    delete _uart;
+#endif
 }
 
 bool IOTShield::enable()
@@ -234,6 +240,7 @@ const std::vector<float> IOTShield::getAngularRate()
 
 void IOTShield::sendReceive()
 {
+#if _WITH_MRAA
     timeval clock;
     double now = 0.0;
     do
@@ -274,7 +281,10 @@ void IOTShield::sendReceive()
    unsigned int voltage = _rxBuf[30];
    voltage              = voltage << 8;
    voltage             |= _rxBuf[29];
-   _systemVoltage       = (float) voltage / 100.f;   
+   _systemVoltage       = (float) voltage / 100.f;
+#else
+   std::cerr << "Ignoring UART communication demand." << std::endl;
+#endif
 }
 
 } // namespace

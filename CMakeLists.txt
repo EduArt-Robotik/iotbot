@@ -16,7 +16,12 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-
+if(EXISTS "/usr/include/mraa/common.hpp")
+  message(STATUS "Found mraa installed at ${MRAA_INCLUDE_DIR}.")
+  add_compile_definitions(_WITH_MRAA)
+else()
+  message(STATUS "Couldn't find mraa, are you compiling on a IOT 2050 device? This node will not provide a usable interface.")
+endif()
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed

@@ -2,8 +2,13 @@
 #define __IOTSHIELD_H
 
 #include <vector>
+#if _WITH_MRAA
 #include "mraa/common.hpp"
 #include "mraa/uart.hpp"
+#else
+#include <stdint.h>
+#include <string.h>
+#endif
 
 namespace iotbot
 {
@@ -216,7 +221,9 @@ private:
 
    void sendReceive();
 
+#if _WITH_MRAA
    mraa::Uart* _uart;
+#endif
 
    char _txBuf[11];
    
