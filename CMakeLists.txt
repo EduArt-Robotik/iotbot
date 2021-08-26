@@ -19,8 +19,10 @@ find_package(catkin REQUIRED COMPONENTS
 if(EXISTS "/usr/include/mraa/common.hpp")
   message(STATUS "Found mraa installed at ${MRAA_INCLUDE_DIR}.")
   add_compile_definitions(_WITH_MRAA)
+  set(HAVE_MRAA "TRUE")
 else()
   message(STATUS "Couldn't find mraa, are you compiling on a IOT 2050 device? This node will not provide a usable interface.")
+  set(HAVE_MRAA "FALSE")
 endif()
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -152,10 +154,18 @@ add_executable(${PROJECT_NAME}_node src/iotbot_node.cpp src/IOTBot.cpp src/IOTSh
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
+if(HAVE_MRAA)
+message("MRAA library found")
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
   mraa
 )
+else()
+message("MRAA library not found")
+target_link_libraries(${PROJECT_NAME}_node
+  ${catkin_LIBRARIES}
+)
+endif()
 
 #############
 ## Install ##
