@@ -8,6 +8,7 @@
 #include <std_msgs/Float32MultiArray.h>
 #include <std_srvs/SetBool.h>
 #include <sensor_msgs/Imu.h>
+#include <geometry_msgs/PoseStamped.h>
 #include <iostream>
 #include "IOTShield.h"
 
@@ -162,6 +163,7 @@ private:
   ros::Publisher         _pubRPM;
   ros::Publisher         _pubVoltage;
   ros::Publisher         _pubIMU;
+  ros::Publisher         _pubPose;
 
   ChassisParams          _chassisParams;
   MotorParams*           _motorParams;

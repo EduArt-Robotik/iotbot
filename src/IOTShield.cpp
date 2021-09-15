@@ -32,12 +32,17 @@ const char* devPath = "/dev/ttyS1";
 IOTShield::IOTShield()
 {
    _timeCom = 0.0;
+   _fusion = true;
 
    _rpm.resize(4);
    _ranges.resize(4);
    _acceleration.resize(3);
    _angularRate.resize(3);
-
+   _q.resize(4);
+   _q[0] = 1.0;
+   _q[1] = 0.0;
+   _q[2] = 0.0;
+   _q[3] = 0.0;
 #if _WITH_MRAA
    _uart = new mraa::Uart(devPath);
 
@@ -80,6 +85,23 @@ bool IOTShield::disable()
    _txBuf[0] = 0xFF;
    _txBuf[1] = CMD_DISABLE;
    _txBuf[10] = 0xEE;
+   sendReceive();
+   return 1;
+}
+
+bool IOTShield::setIMUMode(bool fusion)
+{
+   _txBuf[0] = 0xFF;
+   _txBuf[1] = CMD_FUSEIMU;
+   if(fusion)
+   {
+      _txBuf[2] = 0xFF;
+   }
+   else
+   {
+      _txBuf[2] = 0x00;
+   }
+   _fusion = fusion;
    sendReceive();
    return 1;
 }
@@ -238,6 +260,11 @@ const std::vector<float> IOTShield::getAngularRate()
    return _angularRate;
 }
 
+const std::vector<float> IOTShield::getOrientation()
+{
+   return _q;
+}
+
 void IOTShield::sendReceive()
 {
 #if _WITH_MRAA
@@ -252,19 +279,30 @@ void IOTShield::sendReceive()
    _uart->write((char*)_txBuf, 11);
    _uart->read(_rxBuf, 32);
 
-   for(int i=0; i<3; i++)
+   if(_fusion)
    {
-      int16_t  val     = _rxBuf[10+2*i];
-      val              = val << 8;
-      val             |= _rxBuf[9+2*i];
-      // convert from mg*10 to g
-      _acceleration[i] = ((float)val)/10000.f;
+      int16_t* ibuf = (int16_t*)(&_rxBuf[9]);
+      _q[0] = ((float)ibuf[0])/10000.f;
+      _q[1] = ((float)ibuf[1])/10000.f;
+      _q[2] = ((float)ibuf[2])/10000.f;
+      _q[3] = ((float)ibuf[3])/10000.f;
+   }
+   else
+   {
+      for(int i=0; i<3; i++)
+      {
+         int16_t  val     = _rxBuf[10+2*i];
+         val              = val << 8;
+         val             |= _rxBuf[9+2*i];
+         // convert from mg*10 to g
+         _acceleration[i] = ((float)val)/10000.f;
 
-      val              = _rxBuf[16+2*i];
-      val              = val << 8;
-      val             |= _rxBuf[15+2*i];
-      // convert from mdps/10 to dps
-      _angularRate[i]  = ((float)val)/100.f;
+         val              = _rxBuf[16+2*i];
+         val              = val << 8;
+         val             |= _rxBuf[15+2*i];
+         // convert from mdps/10 to dps
+         _angularRate[i]  = ((float)val)/100.f;
+      }
    }
    for(int i=0; i<4; i++)
    {

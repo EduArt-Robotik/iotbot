@@ -23,6 +23,7 @@ namespace iotbot
 #define CMD_INVERTENC       0x07
 #define CMD_LOWVOLTAGECHECK 0x08
 #define CMD_STALLCHECK      0x09
+#define CMD_FUSEIMU         0x0A
 
 // Operating commands
 #define CMD_SETPWM          0x10
@@ -94,6 +95,13 @@ public:
     * @return success
     */
    bool disable();
+
+   /**
+    * Enable/Disable IMU data fusion.
+    * @param[in] fusion false: raw data is transmitted, true: fused data as quaternion is transmitted.
+    * @return success
+    */
+   bool setIMUMode(bool fusion);
 
    /**
     * Set ration of motor gears
@@ -217,6 +225,12 @@ public:
     */
    const std::vector<float> getAngularRate();
    
+   /**
+    * Get fused IMU data (accelerometer and gyroscope)
+    * return orientation as quaternion (w x y z)
+    */
+   const std::vector<float> getOrientation();
+   
 private:
 
    void sendReceive();
@@ -238,8 +252,12 @@ private:
    std::vector<float> _acceleration;
 
    std::vector<float> _angularRate;
+   
+   std::vector<float> _q;
 
    double _timeCom;
+   
+   bool _fusion;
    
 };
 

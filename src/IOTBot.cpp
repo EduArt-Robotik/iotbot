@@ -39,7 +39,8 @@ IOTBot::IOTBot(ChassisParams &chassisParams, MotorParams &motorParams)
   _pubRPM     = _nh.advertise<std_msgs::Float32MultiArray>("rpm", 1);
   _pubVoltage = _nh.advertise<std_msgs::Float32>("voltage", 1);
   _pubIMU     = _nh.advertise<sensor_msgs::Imu>("imu", 1);
-
+  _pubPose    = _nh.advertise<geometry_msgs::PoseStamped>("pose", 1);
+  
   _rpm[0] = 0.0;
   _rpm[1] = 0.0;
   _rpm[2] = 0.0;
@@ -122,6 +123,19 @@ void IOTBot::run()
     msgIMU.angular_velocity_covariance = { 0, 0, 0, 0, 0, 0, 0, 0, 0};
     _pubIMU.publish(msgIMU);
 
+    const std::vector<float> vQ  = _shield->getOrientation();
+    geometry_msgs::PoseStamped msgPose;
+	 msgPose.header.frame_id = "map";
+	 msgPose.header.stamp = tNow;
+	 msgPose.pose.position.x = 0;
+	 msgPose.pose.position.y = 0;
+    msgPose.pose.position.z = 0;
+	 msgPose.pose.orientation.x = vQ[1];
+	 msgPose.pose.orientation.y = vQ[2];
+	 msgPose.pose.orientation.z = vQ[3];
+	 msgPose.pose.orientation.w = vQ[0];
+	 _pubPose.publish(msgPose);
+			   
     rate.sleep();
 
     run = ros::ok();
