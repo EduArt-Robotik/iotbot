@@ -32,7 +32,7 @@ const char* devPath = "/dev/ttyS1";
 IOTShield::IOTShield()
 {
    _timeCom = 0.0;
-   _fusion = true;
+   _rawdata = true;
 
    _rpm.resize(4);
    _ranges.resize(4);
@@ -89,19 +89,57 @@ bool IOTShield::disable()
    return 1;
 }
 
-bool IOTShield::setIMUMode(bool fusion)
+bool IOTShield::setIMURawFormat(bool rawdata)
 {
    _txBuf[0] = 0xFF;
-   _txBuf[1] = CMD_FUSEIMU;
-   if(fusion)
+   _txBuf[1] = CMD_IMURAWDATA;
+   if(rawdata)
    {
       _txBuf[2] = 0xFF;
+      _acceleration[0] = 0;
+      _acceleration[1] = 0;
+      _acceleration[2] = 0;
+      _acceleration[3] = 0;
+      _angularRate[0]  = 0;
+      _angularRate[1]  = 0;
+      _angularRate[2]  = 0;
+      _angularRate[3]  = 0;
    }
    else
    {
       _txBuf[2] = 0x00;
+      _q[0] = 1;
+      _q[1] = 0;
+      _q[2] = 0;
+      _q[3] = 0;
    }
-   _fusion = fusion;
+   _rawdata = rawdata;
+   sendReceive();
+   return 1;
+}
+
+bool IOTShield::setTimeout(float timeout)
+{
+	_txBuf[0] = 0xFF;
+	_txBuf[1] = CMD_UARTTIMEOUT;
+	floatToByteArray(&timeout, (int8_t*)&(_txBuf[2]));
+   sendReceive();
+   return 1;
+}
+
+bool IOTShield::setDriftWeight(float weight)
+{
+	_txBuf[0] = 0xFF;
+	_txBuf[1] = CMD_FUSEIMUWEIGHT;
+	floatToByteArray(&weight, (int8_t*)&(_txBuf[2]));
+   sendReceive();
+   return 1;
+}
+
+bool IOTShield::calibrateIMU()
+{
+   _txBuf[0] = 0xFF;
+   _txBuf[1] = CMD_IMUCALIBRATE;
    sendReceive();
    return 1;
 }
@@ -265,6 +303,11 @@ const std::vector<float> IOTShield::getOrientation()
    return _q;
 }
 
+const float IOTShield::getTemperature()
+{
+	return _temperature;
+}
+
 void IOTShield::sendReceive()
 {
 #if _WITH_MRAA
@@ -279,13 +322,18 @@ void IOTShield::sendReceive()
    _uart->write((char*)_txBuf, 11);
    _uart->read(_rxBuf, 32);
 
-   if(_fusion)
+   if(!_rawdata)
    {
       int16_t* ibuf = (int16_t*)(&_rxBuf[9]);
       _q[0] = ((float)ibuf[0])/10000.f;
       _q[1] = ((float)ibuf[1])/10000.f;
       _q[2] = ((float)ibuf[2])/10000.f;
       _q[3] = ((float)ibuf[3])/10000.f;
+      
+      int16_t temp = _rxBuf[18];
+      temp         = temp << 8;
+      temp        |= _rxBuf[17];
+      _temperature = ((float)temp) / 100.f;
    }
    else
    {
@@ -302,6 +350,8 @@ void IOTShield::sendReceive()
          val             |= _rxBuf[15+2*i];
          // convert from mdps/10 to dps
          _angularRate[i]  = ((float)val)/100.f;
+         
+         _temperature = -273.f;
       }
    }
    for(int i=0; i<4; i++)

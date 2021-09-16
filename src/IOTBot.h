@@ -7,6 +7,7 @@
 #include <std_msgs/Float32.h>
 #include <std_msgs/Float32MultiArray.h>
 #include <std_srvs/SetBool.h>
+#include <std_srvs/Empty.h>
 #include <sensor_msgs/Imu.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <iostream>
@@ -136,6 +137,12 @@ private:
   bool enableCallback(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
 
   /**
+   * ROS service callback for triggering IMU calibration
+   * @return success state
+   */
+  bool calibrateCallback(std_srvs::Empty::Request& request, std_srvs::Empty::Response& response);
+
+  /**
    * ROS joystick callback
    * @param[in] joy message with joystick command
    */
@@ -159,12 +166,13 @@ private:
   ros::Subscriber        _subJoy;
   ros::Subscriber        _subVel;
   ros::ServiceServer     _srvEnable;
+  ros::ServiceServer     _srvCali;
   ros::Publisher         _pubToF;
   ros::Publisher         _pubRPM;
   ros::Publisher         _pubVoltage;
   ros::Publisher         _pubIMU;
   ros::Publisher         _pubPose;
-
+  ros::Publisher         _pubTemp;
   ChassisParams          _chassisParams;
   MotorParams*           _motorParams;
   IOTShield*             _shield;

@@ -23,7 +23,10 @@ namespace iotbot
 #define CMD_INVERTENC       0x07
 #define CMD_LOWVOLTAGECHECK 0x08
 #define CMD_STALLCHECK      0x09
-#define CMD_FUSEIMU         0x0A
+#define CMD_IMURAWDATA      0x0A
+#define CMD_FUSEIMUWEIGHT   0x0B
+#define CMD_UARTTIMEOUT     0x0C
+#define CMD_IMUCALIBRATE    0x0D
 
 // Operating commands
 #define CMD_SETPWM          0x10
@@ -97,11 +100,31 @@ public:
    bool disable();
 
    /**
-    * Enable/Disable IMU data fusion.
-    * @param[in] fusion false: raw data is transmitted, true: fused data as quaternion is transmitted.
+    * Enable/Disable IMU rawdata transmission.
+    * @param[in] rawdata true: raw data is transmitted (default), false: fused data as quaternion is transmitted.
     * @return success
     */
-   bool setIMUMode(bool fusion);
+   bool setIMURawFormat(bool rawdata);
+
+   /**
+    * Set time without UART communication until an enable state will be removed.
+    * @param 
+    */
+   bool setTimeout(float timeout);
+
+   /**
+    * Set weight of drift parameter. Gyro data is used for fast orientation changes,
+    * while the accelerometer comensates drift for 2 of the degrees of freedom.
+    * @param[in] weight a larger weight increases the belief in the accelerometer values [0; 1], default: 0.03f.
+    * return success
+    */
+   bool setDriftWeight(float weight);
+
+   /**
+    * Trigger IMU calibration (takes about 1 second). The platform needs to stand still during this procedure.
+    * @return success
+    */
+   bool calibrateIMU();
 
    /**
     * Set ration of motor gears
@@ -231,6 +254,12 @@ public:
     */
    const std::vector<float> getOrientation();
    
+   /**
+    * Get onboard temperature measurement.
+    * return temperature
+    */
+   const float getTemperature();
+   
 private:
 
    void sendReceive();
@@ -257,7 +286,9 @@ private:
 
    double _timeCom;
    
-   bool _fusion;
+   bool _rawdata;
+   
+   float _temperature;
    
 };
 
