@@ -24,8 +24,9 @@ IOTBot::IOTBot(ChassisParams &chassisParams, MotorParams &motorParams)
   _shield->setLowPassSetPoint(_motorParams->lowPassInputFilter);
   _shield->setLowPassEncoder(_motorParams->lowPassEncoderTicks);
   _shield->setLighting(iotbot::dimLight, _rgb);
-  _shield->setIMURawFormat(true);
-  //_shield->setDriftWeight(0.03f);	
+  _shield->setIMURawFormat(false);
+  _shield->setDriftWeight(0.02f);
+  _shield->calibrateIMU();
   
   _rad2rpm    = (chassisParams.wheelBase+chassisParams.track)/chassisParams.wheelDiameter; // (lx+ly)/2 * 1/r
   _rpm2rad    = 1.0 / _rad2rpm;
