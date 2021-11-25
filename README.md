@@ -97,3 +97,34 @@ The output of warnings on the IOT2050 device should stop and the IOTbot can be s
 ### Steering with Keyboard
 For the IOTbot, a minimalistic GUI is provided, that enables the steering with the keyboard.
 For installation and usage, please visit the following repository: https://github.com/eduart-robotik/iotbot_virtual_joy.git
+
+# Quick Start for pre-installed Systems
+1) Switch on robot and connect to the wireless network (pre-installed systems have the SSID "Eduard_{Color}").
+2) The default IP adress of the robot is 192.168.0.100. Check the IP of your system with
+```console
+ip addr
+```
+and set the appropriate environment variables, e.g.:
+```console
+export ROS_IP=192.168.0.200; export ROS_HOSTNAME=192.168.0.200; export ROS_MASTER_URI=https://192.168.0.100:11311
+```
+3) Then connect to your robot with a second terminal:
+```console
+ssh root@192.168.0.100
+```
+The default password is "root". Please change the password at your first login. Consider also to add your own user as sudoer and disable the login for the root account.
+
+4) The robot can be activated with a ROS launch script. It is recommended to start a rosmaster service beforehand:
+```console
+roscore &
+```
+Depending on the wheels mounted, start the corresponding script, e.g.:
+```console
+roslaunch iotbot skid_performance.launch
+```
+for robots having performance drives and off-road tires mounted. Other options are mecanum_performance.launch for mounted mecanum wheels or skid.launch and mecanum.launch for the low-cost drives.
+
+5) Now go back to the terminal, where you have set the ROS environment variables and launch the virtual joystick node:
+```console
+python3 src/iotbot_virtual_joy/scripts/iotbot_virtual_joy_node.py _mecanum:=1
+```
