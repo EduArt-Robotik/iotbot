@@ -35,7 +35,7 @@ reboot
 In order to run the robot, you need to launch the appropriate launch file. In the launch folder, there are four prepared templates.
 Choose the right kinematic concept and the right motor variant (basic or performance).
 ```console
-roslaunch src/iotbot/launch/skid_performance.launch
+roslaunch iotbot skid_performance.launch
 ```
 When everthing is initialized well, one should see the following output:
 ```console
