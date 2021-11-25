@@ -126,9 +126,9 @@ for robots having performance drives and off-road tires mounted. Other options a
 
 5) Now go back to the terminal, where you have set the ROS environment variables and launch the virtual joystick node:
 ```console
-python3 src/iotbot_virtual_joy/scripts/iotbot_virtual_joy_node.py _mecanum:=1
+python3 src/iotbot_virtual_joy/scripts/iotbot_virtual_joy_node.py
 ```
-See the documentation of the virtual joystick for installation instructions: https://github.com/eduart-robotik/iotbot_virtual_joy.git
+See the documentation of the virtual joystick for installation instructions and more features: https://github.com/eduart-robotik/iotbot_virtual_joy.git
 
 ## Conditions to move the Robot
 1) The emergency stop button is not pressed.
