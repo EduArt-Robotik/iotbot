@@ -98,7 +98,7 @@ The output of warnings on the IOT2050 device should stop and the IOTbot can be s
 For the IOTbot, a minimalistic GUI is provided, that enables the steering with the keyboard.
 For installation and usage, please visit the following repository: https://github.com/eduart-robotik/iotbot_virtual_joy.git
 
-# Quick Start for pre-installed Systems
+# Quick Start Guide for pre-installed Systems
 1) Switch on robot and connect to the wireless network (pre-installed systems have the SSID "Eduard_{Color}").
 2) The default IP adress of the robot is 192.168.0.100. Check the IP of your system with
 ```console
