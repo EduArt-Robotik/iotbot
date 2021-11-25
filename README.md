@@ -128,3 +128,13 @@ for robots having performance drives and off-road tires mounted. Other options a
 ```console
 python3 src/iotbot_virtual_joy/scripts/iotbot_virtual_joy_node.py _mecanum:=1
 ```
+See the documentation of the virtual joystick for installation instructions: https://github.com/eduart-robotik/iotbot_virtual_joy.git
+
+## Conditions to move the Robot
+1) The emergency stop button is not pressed.
+
+2) The charging cable is not connected.
+
+3) The drive has been activated (enable command).
+
+**Important: The robot has an undervoltage detection. If the battery voltage permanently drops below 17.5V, the robot flashes a red warning signal. Now the robot should be connected to a charging cable as soon as possible. If this does not happen, the system will automatically shut down after 120s.**
