@@ -157,19 +157,42 @@ The following graphic gives an overview of the electrical interfaces of the IOT2
 Please finde below a description of the individual sockets.
 
 ### 1) Battery socket
+The battery socket is suitable for the battery supplied by EduArt. Do not connect any other battery, as the charge controller is only designed for this battery type.
 
 ### 2) Control line socket
+The 8-pin socket for the control lines enables the connection of the following components.
+| Component  | Description      |
+| ------ |:--|
+| On/Off switch | Connect the switch between the SWON1 and SWON2 contacts. The on-state is when you short-circuit both contacts. |
+| External power supply | An external power supply must be between 27V and 30V and capable of supplying a current of 3A. Connect the positive pole of the power supply output to the contact labeled V+ and the power supply ground to GND.. |
+| Stopp push button | Connect a normally closed pushbutton to the +5V and EMRG contacts. If the button is not pressed, these contacts are short-circuited. The drives are then activated. Pressing this button only deactivates the motor control. The supply voltages for the peripheral devices are still provided..|
+| Start button | Connect a non-latching pushbutton to the START and GND contacts. A short pulse signals a switch-on command to the IOT2050 expansion shield.. |
 ![Control line](/images/01_MotorShield_04_Controlline.jpg)
 
 ### 3) Status LEDs
+| #      | Description      |
+| ------ |:--|
+| FAULT      | Charger in fault state. |
+| CHRG       | Charging process in progress. |
+| RDY        | Chager ready for operation.|
+| STAT1      | Status 1: Stopp button state. This LED lights up when the stop button is not engaged. |
+| STAT2      | Status 2: Drive readiness state. This LED lights up when the drives are enabled and ready for control. |
+| STAT3      | Status 3: General error. This LED lights up when unforeseen errors occur. |
 
 ### 4) IOT2050 supply socket
+The IOT2050 expansion board provides a supply output for the IOT2050 gateway. The output voltage is limited to 21.6V. When the power supply is not connected, the output voltage is at maximum the battery voltage. This output voltage can be used as supply voltage for the IOT2050 gateway by means of a wire jumper.
+
+![IOT supply socket](/images/01_MotorShield_04_VIOT.jpg)
 
 ### 5) Motor sockets
-![Motor connection](/images/01_MotorShield_04_Pololu.jpg)
+Shown below is the connection of four 37D metal gear motors from Pololu. Be careful not to connect the connectors the wrong way round. Reversing the polarity of these connections would destroy encoder electronics and in the worst case even the IOT2050 expansion board. 
+
+As an alternative, high-quality motors from Faulhaber (type 2232) can be connected with a standard ribbon cable. These motor connections are protected against polarity reversal, but these motors are significantly more expensive.
+
+![Motor sockets](/images/01_MotorShield_04_Pololu.jpg)
 
 ### 6) CAN sockets for lighting system
-
+These connectors allow to connect the sensor-integrated lighting system from EduArt. The socket labeled CAN1 connects the left strand of the bus system. CAN2 connects the right strand.
 
 ## DCDC converter shield
 ![DCDC converter](/images/01_MotorShield_04_DCDC.jpg)
