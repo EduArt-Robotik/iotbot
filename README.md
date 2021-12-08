@@ -71,7 +71,7 @@ rosrun joy joy_node _autorepeat_rate:=10
 The output of warnings on the IOT2050 device should stop and the IOTbot can be steered. Please find the button and axis mapping of the joystick below:
 
 | Button | Function         |
-| ------ |:----------------:|
+| ------ |:--|
 | F1     | Beam light       |
 | F2     | Warning light    |
 | F3     | Flash left       |
@@ -83,7 +83,7 @@ The output of warnings on the IOT2050 device should stop and the IOTbot can be s
 **Important:** The robot must be enabled, before it will move!
 
 | Axis   | Function           |
-| ------ |:------------------:|
+| ------ |:--|
 | y (0)  | Move left/right    |
 | x (1)  | Move for-/backward |
 | z (2)  | Turn left/right    |
@@ -140,11 +140,45 @@ See the documentation of the virtual joystick for installation instructions and 
 **Important: The robot has an undervoltage detection. If the battery voltage permanently drops below 17.5V, the robot flashes a red warning signal. Now the robot should be connected to a charging cable as soon as possible. If this does not happen, the system will automatically shut down after 120s.**
 
 # Electrical Interface
+
+## IOT2050 extension shield
+The following graphic gives an overview of the electrical interfaces of the IOT2050 expansion shield. You can also see the attached DCDC converter shield, which makes it possible to supply additional devices with a constant voltage.
 ![Overview](/images/01_MotorShield_04_Overview.jpg)
 
-![Motor connection](/images/01_MotorShield_04_Pololu.jpg)
+| #      | Description      |
+| ------ |:--|
+| 1      | Battery socket: Connect only batteries specified by EduArt (19,2V NiMH, 6.8kOhm NTC). |
+| 2      | Control line socket: 8-pin socket to connect charger, stop button, on/off switch and start button. |
+| 3      | Status LEDs: Visualization of the following statuses: Charge status, Stop button pressed, Enable status of the motors, General error.      |
+| 4      | IOT2050 supply socket: Output socket for supplying the IOT2050. |
+| 5      | Motor sockets: Two different sockets supporting the connectors of 37D metal gear motors from Pololu and the 2232 series of Faulhaber. |
+| 6      | CAN sockets for lighting system: CAN1 is for the left side and CAN2 for the right side of the lighting system.    |
 
+Please finde below a description of the individual sockets.
+
+### 1) Battery socket
+
+### 2) Control line socket
 ![Control line](/images/01_MotorShield_04_Controlline.jpg)
 
+### 3) Status LEDs
+
+### 4) IOT2050 supply socket
+
+### 5) Motor sockets
+![Motor connection](/images/01_MotorShield_04_Pololu.jpg)
+
+### 6) CAN sockets for lighting system
+
+
+## DCDC converter shield
 ![DCDC converter](/images/01_MotorShield_04_DCDC.jpg)
+
+| #      | Description      |
+| ------ |:--|
+| A      | Power output socket: This sockets provides the system voltage to external components. The voltage varies between 17.5V and 30V. Make sure that devices that are supplied via this socket can also withstand the specified voltage range. Connect the power line for the adapter shield to this socket. |
+| B      | 5A fuse for power output socket. |
+| C      | Dip switch for switching the voltage levels of the auxiliary power supply. The on position switches to the respective higher voltage.|
+| D      | Auxiliary power supply. VAUX1: 12V or 5V, VAUX2 19V or 12V. |
+| E      | Flat ribbon cable jack for the Arduino compatible expansion board. |
 
