@@ -138,3 +138,13 @@ See the documentation of the virtual joystick for installation instructions and 
 3) The drive has been activated (enable command).
 
 **Important: The robot has an undervoltage detection. If the battery voltage permanently drops below 17.5V, the robot flashes a red warning signal. Now the robot should be connected to a charging cable as soon as possible. If this does not happen, the system will automatically shut down after 120s.**
+
+# Electrical Interface
+![Overview](/images/01_MotorShield_04_Overview.jpg)
+
+![Motor connection](/images/01_MotorShield_04_Pololu.jpg)
+
+![Control line](/images/01_MotorShield_04_Controlline.jpg)
+
+![DCDC converter](/images/01_MotorShield_04_DCDC.jpg)
+
