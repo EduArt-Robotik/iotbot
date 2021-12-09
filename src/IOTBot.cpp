@@ -24,7 +24,10 @@ IOTBot::IOTBot(ChassisParams &chassisParams, MotorParams &motorParams)
   _shield->setLowPassSetPoint(_motorParams->lowPassInputFilter);
   _shield->setLowPassEncoder(_motorParams->lowPassEncoderTicks);
   _shield->setLighting(iotbot::dimLight, _rgb);
-
+  _shield->setIMURawFormat(false);
+  _shield->setDriftWeight(0.02f);
+  _shield->calibrateIMU();
+  
   _rad2rpm    = (chassisParams.wheelBase+chassisParams.track)/chassisParams.wheelDiameter; // (lx+ly)/2 * 1/r
   _rpm2rad    = 1.0 / _rad2rpm;
   _ms2rpm     = 60.0/(chassisParams.wheelDiameter*M_PI);
@@ -35,11 +38,14 @@ IOTBot::IOTBot(ChassisParams &chassisParams, MotorParams &motorParams)
   _subJoy     = _nh.subscribe<sensor_msgs::Joy>("joy", 1, &IOTBot::joyCallback, this);
   _subVel     = _nh.subscribe<geometry_msgs::Twist>("vel/teleop", 1, &IOTBot::velocityCallback, this);
   _srvEnable  = _nh.advertiseService("enable", &IOTBot::enableCallback, this);
+  _srvCali    = _nh.advertiseService("calibrate", &IOTBot::calibrateCallback, this);
   _pubToF     = _nh.advertise<std_msgs::Float32MultiArray>("tof", 1);
   _pubRPM     = _nh.advertise<std_msgs::Float32MultiArray>("rpm", 1);
   _pubVoltage = _nh.advertise<std_msgs::Float32>("voltage", 1);
+  _pubTemp    = _nh.advertise<std_msgs::Float32>("temperature", 1);
   _pubIMU     = _nh.advertise<sensor_msgs::Imu>("imu", 1);
-
+  _pubPose    = _nh.advertise<geometry_msgs::PoseStamped>("pose", 1);
+  
   _rpm[0] = 0.0;
   _rpm[1] = 0.0;
   _rpm[2] = 0.0;
@@ -73,6 +79,7 @@ void IOTBot::run()
   std_msgs::Float32MultiArray msgToF;
   std_msgs::Float32MultiArray msgRPM;
   std_msgs::Float32           msgVoltage;
+  std_msgs::Float32           msgTemp;
   sensor_msgs::Imu            msgIMU;
   while(run)
   {
@@ -108,6 +115,10 @@ void IOTBot::run()
     msgVoltage.data = voltage;
     _pubVoltage.publish(msgVoltage);
 
+    float temperature = _shield->getTemperature();
+    msgTemp.data = temperature;
+    _pubTemp.publish(msgTemp);
+
     const std::vector<float> vAcceleration = _shield->getAcceleration();
     const std::vector<float> vAngularRate  = _shield->getAngularRate();
     msgIMU.header.frame_id = "odom";
@@ -115,13 +126,26 @@ void IOTBot::run()
     msgIMU.orientation_covariance      = { 0, 0, 0, 0, 0, 0, 0, 0, 0};
     msgIMU.linear_acceleration.x       = vAcceleration[0];
     msgIMU.linear_acceleration.y       = vAcceleration[1];
-    msgIMU.linear_acceleration.z       = -vAcceleration[2];
-    msgIMU.angular_velocity.x          = -vAngularRate[0];
-    msgIMU.angular_velocity.y          = -vAngularRate[1];
+    msgIMU.linear_acceleration.z       = vAcceleration[2];
+    msgIMU.angular_velocity.x          = vAngularRate[0];
+    msgIMU.angular_velocity.y          = vAngularRate[1];
     msgIMU.angular_velocity.z          = vAngularRate[2];
     msgIMU.angular_velocity_covariance = { 0, 0, 0, 0, 0, 0, 0, 0, 0};
     _pubIMU.publish(msgIMU);
 
+    const std::vector<float> vQ  = _shield->getOrientation();
+    geometry_msgs::PoseStamped msgPose;
+	 msgPose.header.frame_id = "map";
+	 msgPose.header.stamp = tNow;
+	 msgPose.pose.position.x = 0;
+	 msgPose.pose.position.y = 0;
+    msgPose.pose.position.z = 0;
+	 msgPose.pose.orientation.x = vQ[1];
+	 msgPose.pose.orientation.y = vQ[2];
+	 msgPose.pose.orientation.z = vQ[3];
+	 msgPose.pose.orientation.w = vQ[0];
+	 _pubPose.publish(msgPose);
+			   
     rate.sleep();
 
     run = ros::ok();
@@ -141,6 +165,14 @@ bool IOTBot::enableCallback(std_srvs::SetBool::Request& request, std_srvs::SetBo
      _shield->disable();
    }
    response.success = true;
+   return true;
+}
+
+bool IOTBot::calibrateCallback(std_srvs::Empty::Request& request, std_srvs::Empty::Response& response)
+{
+   ROS_INFO("Calibrating IMU");
+   _shield->calibrateIMU();
+
    return true;
 }
 
