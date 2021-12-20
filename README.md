@@ -96,7 +96,7 @@ The output of warnings on the IOT2050 device should stop and the IOTbot can be s
 
 ### Steering with Keyboard
 For the IOTbot, a minimalistic GUI is provided, that enables the steering with the keyboard.
-For installation and usage, please visit the following repository: https://github.com/eduart-robotik/iotbot_virtual_joy.git
+For installation and usage, please visit the following repository: https://github.com/eduart-robotik/edu_virtual_joy.git
 
 # Quick Start Guide for pre-installed Systems
 1) Switch on robot and connect to the wireless network (pre-installed systems have the SSID "Eduard_{Color}").
@@ -188,6 +188,8 @@ The IOT2050 expansion board provides a supply output for the IOT2050 gateway. Th
 Shown below is the connection of four 37D metal gear motors from Pololu. Be careful not to connect the connectors the wrong way round. Reversing the polarity of these connections would destroy encoder electronics and in the worst case even the IOT2050 expansion board. 
 
 As an alternative, high-quality motors from Faulhaber (type 2232) can be connected with a standard ribbon cable. These motor connections are protected against polarity reversal, but these motors are significantly more expensive.
+
+Do not connect two motors to one channel! Either use the Pololu header or the Faulhaber header.
 
 ![Motor sockets](/images/01_MotorShield_04_Pololu.jpg)
 
