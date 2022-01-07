@@ -3,9 +3,9 @@
     <param name="track"               value="0.3"/>
     <param name="wheelBase"           value="0.3"/>
     <param name="wheelDiameter"       value="0.1"/>
-    <param name="chFrontLeft"         value="2"/>
+    <param name="chFrontLeft"         value="3"/>
     <param name="chFrontRight"        value="1"/>
-    <param name="chRearLeft"          value="3"/>
+    <param name="chRearLeft"          value="2"/>
     <param name="chRearRight"         value="0"/>
     <param name="direction"           value="1"/>
     <param name="enableYMotion"       value="1"/>
