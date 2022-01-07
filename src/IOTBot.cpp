@@ -194,13 +194,21 @@ void IOTBot::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
   static int32_t btn3Prev   = joy->buttons[3];
   static int32_t btn4Prev   = joy->buttons[4];
   static int32_t btn5Prev   = joy->buttons[5];
+  static int32_t btn9Prev   = joy->buttons[9];
   static int32_t btn10Prev  = joy->buttons[10];
 
-  if(joy->buttons[10] && !btn10Prev)
+  
+  if(joy->buttons[9] && !btn9Prev)
+  {
+     ROS_INFO("Disabling robot");
+     _shield->disable();
+  }
+  else if(joy->buttons[10] && !btn10Prev)
   {
      ROS_INFO("Enabling robot");
      _shield->enable();
   }
+  
   if(joy->buttons[0] && !btn0Prev)
   {
      ROS_INFO("Setting beam light");
@@ -252,6 +260,7 @@ void IOTBot::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
   btn3Prev   = joy->buttons[3];
   btn4Prev   = joy->buttons[4];
   btn5Prev   = joy->buttons[5];
+  btn9Prev   = joy->buttons[9];
   btn10Prev  = joy->buttons[10];
 
   if(!btn0Prev && !btn1Prev && !btn2Prev && !btn3Prev && !btn4Prev && !btn5Prev)
