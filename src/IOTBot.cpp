@@ -194,7 +194,7 @@ void IOTBot::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
   static int32_t btn3Prev   = joy->buttons[3];
   static int32_t btn4Prev   = joy->buttons[4];
   static int32_t btn5Prev   = joy->buttons[5];
-  static int32_t btn9Prev  = joy->buttons[9];
+  static int32_t btn9Prev   = joy->buttons[9];
   static int32_t btn10Prev  = joy->buttons[10];
 
   if(joy->buttons[9] && !btn9Prev)
