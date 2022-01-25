@@ -43,13 +43,12 @@ When everthing is initialized well, one should see the following output:
 ```
 This is not a bug, but a feature, since the robot will stop immediately, if no frequent communication with a controlling node is established.
 
-Please notice also, that the ROS variables ROS_MASTER_URI, ROS_HOSTNAME and ROS_IP should be set properly. If you have a changing IP-address of the robot, you might consider to use the following bash code in your ~/.bashrc:
+Please notice also, that the ROS variables ROS_MASTER_URI and ROS_IP should be set properly. If you have a changing IP-address of the robot, you might consider to use the following bash code in your ~/.bashrc:
 
 ```console
 MYIP=`hostname -I | awk '{print $1}'`
 export ROS_MASTER_URI=http://${MYIP}:11311
 export ROS_IP=${MYIP}
-export ROS_HOSTNAME=${MYIP}
 ``` 
 
 ### Steering with Joystick Extreme 3D Pro
@@ -60,7 +59,6 @@ sudo apt install ros-noetic-joy
 After installation, ensure to have configured the ROS communication well:
 ```console
 export ROS_MASTER_URI=http://<IP_OF_IOTBOT>:11311
-export ROS_HOSTNAME=<HOST_IP>
 export ROS_IP=<HOST_IP>
 ```
 Finally, launch the joy node as follows:
@@ -106,7 +104,7 @@ ip addr
 ```
 and set the appropriate environment variables, e.g.:
 ```console
-export ROS_IP=192.168.0.200; export ROS_HOSTNAME=192.168.0.200; export ROS_MASTER_URI=https://192.168.0.100:11311
+export ROS_IP=192.168.0.200; export ROS_MASTER_URI=https://192.168.0.100:11311
 ```
 3) Then connect to your robot with a second terminal:
 ```console
