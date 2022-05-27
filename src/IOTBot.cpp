@@ -42,6 +42,7 @@ IOTBot::IOTBot(ChassisParams &chassisParams, MotorParams &motorParams)
   _pubToF     = _nh.advertise<std_msgs::Float32MultiArray>("tof", 1);
   _pubRPM     = _nh.advertise<std_msgs::Float32MultiArray>("rpm", 1);
   _pubVoltage = _nh.advertise<std_msgs::Float32>("voltage", 1);
+  _pubCurrent = _nh.advertise<std_msgs::Float32>("current", 1);
   _pubTemp    = _nh.advertise<std_msgs::Float32>("temperature", 1);
   _pubIMU     = _nh.advertise<sensor_msgs::Imu>("imu", 1);
   _pubPose    = _nh.advertise<geometry_msgs::PoseStamped>("pose", 1);
@@ -79,6 +80,7 @@ void IOTBot::run()
   std_msgs::Float32MultiArray msgToF;
   std_msgs::Float32MultiArray msgRPM;
   std_msgs::Float32           msgVoltage;
+  std_msgs::Float32           msgCurrent;
   std_msgs::Float32           msgTemp;
   sensor_msgs::Imu            msgIMU;
   while(run)
@@ -114,6 +116,10 @@ void IOTBot::run()
     float voltage = _shield->getSystemVoltage();
     msgVoltage.data = voltage;
     _pubVoltage.publish(msgVoltage);
+    
+    float current = _shield->getLoadCurrent();
+    msgCurrent.data = current;
+    _pubCurrent.publish(msgCurrent);
 
     float temperature = _shield->getTemperature();
     msgTemp.data = temperature;

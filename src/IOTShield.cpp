@@ -282,7 +282,12 @@ float IOTShield::getSystemVoltage()
 {
    return _systemVoltage;
 }
-   
+
+float IOTShield::getLoadCurrent()
+{
+   return _loadCurrent;
+}
+
 const std::vector<float> IOTShield::getRangeMeasurements()
 {
    return _ranges;
@@ -370,6 +375,8 @@ void IOTShield::sendReceive()
    voltage              = voltage << 8;
    voltage             |= _rxBuf[29];
    _systemVoltage       = (float) voltage / 100.f;
+   uint8_t current = _rxBuf[31];
+   _loadCurrent = ((float) current)/20.f;
 #else
    std::cerr << "Ignoring UART communication demand." << std::endl;
 #endif

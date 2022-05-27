@@ -226,9 +226,15 @@ public:
    
    /**
     * Get system voltage
-    * @return system voltage
+    * @return system voltage [V]
     */
    float getSystemVoltage();
+   
+   /**
+    * Get load current (consumed by IOT2050 and drives)
+    * @return load current [A]
+    */
+   float getLoadCurrent();
    
    /**
     * Get time-of-flight measurements
@@ -273,6 +279,8 @@ private:
    char _rxBuf[32];
    
    float _systemVoltage;
+   
+   float _loadCurrent;
    
    std::vector<float> _rpm;
       

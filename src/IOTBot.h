@@ -170,6 +170,7 @@ private:
   ros::Publisher         _pubToF;
   ros::Publisher         _pubRPM;
   ros::Publisher         _pubVoltage;
+  ros::Publisher         _pubCurrent;
   ros::Publisher         _pubIMU;
   ros::Publisher         _pubPose;
   ros::Publisher         _pubTemp;
