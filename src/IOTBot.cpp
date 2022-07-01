@@ -83,6 +83,7 @@ void IOTBot::run()
   std_msgs::Float32           msgCurrent;
   std_msgs::Float32           msgTemp;
   sensor_msgs::Imu            msgIMU;
+  bool lagPrev = false;
   while(run)
   {
     ros::spinOnce();
@@ -92,7 +93,8 @@ void IOTBot::run()
     bool lag = (dt.toSec()>0.5);
     if(lag)
     {
-      ROS_WARN_STREAM("Lag detected ... deactivate motor control");
+     if(!lagPrev)
+	      ROS_WARN_STREAM("Lag detected ... deactivate motor control");
       _rpm[0] = 0.0;
       _rpm[1] = 0.0;
       _rpm[2] = 0.0;
@@ -102,8 +104,11 @@ void IOTBot::run()
     }
     else
     {
+      if(lagPrev)
+	     ROS_WARN_STREAM("Connection stabilized ... motor control unlocked");
       _shield->setRPM(_rpm);
     }
+    lagPrev = lag;
     
     const std::vector<float> vToF = _shield->getRangeMeasurements();
     msgToF.data = vToF;
