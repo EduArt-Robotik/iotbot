@@ -39,6 +39,7 @@ IOTBot::IOTBot(ChassisParams &chassisParams, MotorParams &motorParams)
   _subVel     = _nh.subscribe<geometry_msgs::Twist>("vel/teleop", 1, &IOTBot::velocityCallback, this);
   _srvEnable  = _nh.advertiseService("enable", &IOTBot::enableCallback, this);
   _srvCali    = _nh.advertiseService("calibrate", &IOTBot::calibrateCallback, this);
+  _srvFix     = _nh.advertiseService("fix_imu_z_axis", &IOTBot::fixIMUZAxisCallback, this);
   _pubToF     = _nh.advertise<std_msgs::Float32MultiArray>("tof", 1);
   _pubRPM     = _nh.advertise<std_msgs::Float32MultiArray>("rpm", 1);
   _pubVoltage = _nh.advertise<std_msgs::Float32>("voltage", 1);
@@ -146,17 +147,17 @@ void IOTBot::run()
 
     const std::vector<float> vQ  = _shield->getOrientation();
     geometry_msgs::PoseStamped msgPose;
-	 msgPose.header.frame_id = "map";
-	 msgPose.header.stamp = tNow;
-	 msgPose.pose.position.x = 0;
-	 msgPose.pose.position.y = 0;
+    msgPose.header.frame_id = "map";
+    msgPose.header.stamp = tNow;
+    msgPose.pose.position.x = 0;
+    msgPose.pose.position.y = 0;
     msgPose.pose.position.z = 0;
-	 msgPose.pose.orientation.x = vQ[1];
-	 msgPose.pose.orientation.y = vQ[2];
-	 msgPose.pose.orientation.z = vQ[3];
-	 msgPose.pose.orientation.w = vQ[0];
-	 _pubPose.publish(msgPose);
-			   
+    msgPose.pose.orientation.x = vQ[1];
+    msgPose.pose.orientation.y = vQ[2];
+    msgPose.pose.orientation.z = vQ[3];
+    msgPose.pose.orientation.w = vQ[0];
+    _pubPose.publish(msgPose);
+	 		   
     rate.sleep();
 
     run = ros::ok();
@@ -183,7 +184,14 @@ bool IOTBot::calibrateCallback(std_srvs::Empty::Request& request, std_srvs::Empt
 {
    ROS_INFO("Calibrating IMU");
    _shield->calibrateIMU();
+   return true;
+}
 
+bool IOTBot::fixIMUZAxisCallback(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response)
+{
+   ROS_INFO("Fixing Z-Axis: %d", request.data);
+   _shield->fixIMUZAxis(request.data);
+   response.success = true;
    return true;
 }
 

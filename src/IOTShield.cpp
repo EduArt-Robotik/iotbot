@@ -118,20 +118,29 @@ bool IOTShield::setIMURawFormat(bool rawdata)
    return 1;
 }
 
+bool IOTShield::fixIMUZAxis(bool fix)
+{
+   _txBuf[0] = 0xFF;
+   _txBuf[1] = CMD_IMUFIXZAXIS;
+   _txBuf[2] = fix;
+   sendReceive();
+   return 1;
+}
+
 bool IOTShield::setTimeout(float timeout)
 {
-	_txBuf[0] = 0xFF;
-	_txBuf[1] = CMD_UARTTIMEOUT;
-	floatToByteArray(&timeout, (int8_t*)&(_txBuf[2]));
+   _txBuf[0] = 0xFF;
+   _txBuf[1] = CMD_UARTTIMEOUT;
+   floatToByteArray(&timeout, (int8_t*)&(_txBuf[2]));
    sendReceive();
    return 1;
 }
 
 bool IOTShield::setDriftWeight(float weight)
 {
-	_txBuf[0] = 0xFF;
-	_txBuf[1] = CMD_FUSEIMUWEIGHT;
-	floatToByteArray(&weight, (int8_t*)&(_txBuf[2]));
+   _txBuf[0] = 0xFF;
+   _txBuf[1] = CMD_FUSEIMUWEIGHT;
+   floatToByteArray(&weight, (int8_t*)&(_txBuf[2]));
    sendReceive();
    return 1;
 }
@@ -325,8 +334,9 @@ void IOTShield::sendReceive()
     }while((now - _timeCom) < 0.008);
     _timeCom = now;
    _uart->write((char*)_txBuf, 11);
+   usleep(1000);
    _uart->read(_rxBuf, 32);
-
+   usleep(1000);
    if(!_rawdata)
    {
       int16_t* ibuf = (int16_t*)(&_rxBuf[9]);

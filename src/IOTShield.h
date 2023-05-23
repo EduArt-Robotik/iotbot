@@ -27,6 +27,7 @@ namespace iotbot
 #define CMD_FUSEIMUWEIGHT   0x0B
 #define CMD_UARTTIMEOUT     0x0C
 #define CMD_IMUCALIBRATE    0x0D
+#define CMD_IMUFIXZAXIS     0x0E
 
 // Operating commands
 #define CMD_SETPWM          0x10
@@ -105,6 +106,13 @@ public:
     * @return success
     */
    bool setIMURawFormat(bool rawdata);
+
+   /**
+    * Fix IMU z-axis
+    * @param[in] fix true: fix z-axis, false: enable z-axis (yaw angle estimation)
+    * @return success
+    */
+   bool fixIMUZAxis(bool fix);
 
    /**
     * Set time without UART communication until an enable state will be removed.

@@ -143,6 +143,14 @@ private:
   bool calibrateCallback(std_srvs::Empty::Request& request, std_srvs::Empty::Response& response);
 
   /**
+   * ROS service callback for fixing the IMU's yaw angle estimation
+   * @param[in] request service request data
+   * @param[out] response service response data
+   * @return success state
+   */
+  bool fixIMUZAxisCallback(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response);
+
+  /**
    * ROS joystick callback
    * @param[in] joy message with joystick command
    */
@@ -167,6 +175,7 @@ private:
   ros::Subscriber        _subVel;
   ros::ServiceServer     _srvEnable;
   ros::ServiceServer     _srvCali;
+  ros::ServiceServer     _srvFix;
   ros::Publisher         _pubToF;
   ros::Publisher         _pubRPM;
   ros::Publisher         _pubVoltage;
