@@ -202,6 +202,6 @@ These connectors allow to connect the sensor-integrated lighting system from Edu
 | A      | Power output socket: This sockets provides the system voltage to external components. The voltage varies between 17.5V and 30V. Make sure that devices that are supplied via this socket can also withstand the specified voltage range. Connect the power line for the adapter shield to this socket. |
 | B      | 5A fuse for power output socket. |
 | C      | Dip switch for switching the voltage levels of the auxiliary power supply. The on position switches to the respective higher voltage.|
-| D      | Auxiliary power supply. VAUX1: 12V or 5V, VAUX2 19V or 12V. |
+| D      | Auxiliary power supply. Pins are labeled from left to right: <br> VAUX1 (3 pin): 12 V, 5 V, GND <br> VAUX2 (4 pin): 19 V, 12 V, NC, GND <br> Note: Only either of the voltages on each sockets is available, dependent on the DIP-Switch (see C) |
 | E      | Flat ribbon cable jack for the Arduino compatible expansion board. |
 
